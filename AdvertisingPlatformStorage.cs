@@ -2,6 +2,6 @@
 {
     public class AdvertisingPlatformStorage
     {
-        public Dictionary<string,string> Data { get; } = new Dictionary<string,string>();
+        public Dictionary<string,List<string>> Data { get; } = new Dictionary<string,List<string>>();
     }
 }
