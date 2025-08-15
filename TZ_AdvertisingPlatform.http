@@ -1,0 +1,6 @@
+@TZ_AdvertisingPlatform_HostAddress = http://localhost:5149
+
+GET {{TZ_AdvertisingPlatform_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
