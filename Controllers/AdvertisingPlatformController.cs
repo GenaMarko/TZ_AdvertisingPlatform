@@ -26,19 +26,67 @@ namespace TZ_AdvertisingPlatform.Controllers
 
             _storage.Data.Clear();
 
+            int unreadableLine = 0;
+
             foreach (var line in System.IO.File.ReadAllLines(filePath))
             {
+                if (string.IsNullOrWhiteSpace(line))
+                {
+                    continue;
+                }
+
+                if (!line.Contains(':'))
+                {
+                    unreadableLine++;
+                    continue;
+                }
+
                 var parts = line.Split(':',StringSplitOptions.RemoveEmptyEntries);
 
                 if (parts.Length != 2)
                 {
+                    unreadableLine++;
                     continue;
                 }
 
                 var adName = parts[0].Trim();
 
-                var locations = parts[1].Split(',', StringSplitOptions.RemoveEmptyEntries).
-                    Select(x => x.Trim());
+                if (string.IsNullOrWhiteSpace(adName))
+                {
+                    unreadableLine++;
+                    continue;
+                }
+
+                var locations = parts[1].
+                    Split(',', StringSplitOptions.RemoveEmptyEntries).
+                    Select(x => x.Trim()).
+                    ToList();
+
+                if (locations.Count == 0)
+                {
+                    unreadableLine++;
+                    continue;
+                }
+
+                bool locIsValid = true;
+
+                foreach (var loc in locations)
+                {
+                    if (string.IsNullOrWhiteSpace(loc) || 
+                        !loc.StartsWith('/') || 
+                        loc.Contains("//") ||
+                        loc.Contains(" "))
+                    {
+                        locIsValid = false;
+                        break;
+                    }
+                }
+
+                if (!locIsValid)
+                {
+                    unreadableLine++;
+                    continue;
+                }
 
                 foreach (var loc in locations)
                 {
@@ -51,11 +99,23 @@ namespace TZ_AdvertisingPlatform.Controllers
                 }
             }
 
+            if (_storage.Data.Count == 0)
+            {
+                return NotFound("Отсутствуют читаемые строки.");
+            }
+
+            if (unreadableLine > 0)
+            {
+                return Ok($"Не все данные прочитаны.\n" +
+                    $"Количество добавленных данных: {_storage.Data.Count}\n" +
+                    $"Количество нечитаемых строк: {unreadableLine}");
+            }
+
             return Ok($"Данные успешно загружены в количестве {_storage.Data.Count}");
         }
 
-        [HttpGet("Get advertisement by location")]
-        public IEnumerable<string> GetByLocation(string location)
+        [HttpGet("GetByLocation")]
+        public IActionResult GetByLocation(string location)
         {
             var result = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
@@ -81,8 +141,12 @@ namespace TZ_AdvertisingPlatform.Controllers
                 current = current.Substring(0, lastSlash);
             }
 
-            return result;
+            if (result.Count == 0)
+            {
+                return NotFound($"По запросу '{current}' ничего не найдено");
+            }
 
+            return Ok(result);
         }
     }
 }
