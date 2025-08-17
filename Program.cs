@@ -1,14 +1,17 @@
 using TZ_AdvertisingPlatform;
+using TZ_AdvertisingPlatform.Interfaces;
+using TZ_AdvertisingPlatform.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<AdvertisingPlatformStorage>();
+
+builder.Services.AddSingleton<IAdvertisingRepository, InMemoryAdvertisingRepository>();
+builder.Services.AddScoped<IAdRecordValidator, AdRecordValidator>();
+builder.Services.AddScoped<IAdvertisingService, AdvertisingService>();
 
 var app = builder.Build();
 
@@ -18,10 +21,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-//app.UseHttpsRedirection();
-
-//app.UseAuthorization();
 
 app.MapControllers();
 

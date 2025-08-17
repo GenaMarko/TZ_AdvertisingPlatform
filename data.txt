@@ -3,6 +3,6 @@
 Газета уральских москвичей:/ru/msk,/ru/permobl,/ru/chelobl
 Крутая реклама:/ru/svrd
 
-kek:/
+kek:/,/ru
 
 Парижский бык:/ru/svrd
