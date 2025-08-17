@@ -2,6 +2,7 @@
 
 namespace TZ_AdvertisingPlatform.Services
 {
+    //Класс для взаимодействия со словарем
     public class InMemoryAdvertisingRepository : IAdvertisingRepository
     {
         private readonly Dictionary<string, List<string>> _data = new();

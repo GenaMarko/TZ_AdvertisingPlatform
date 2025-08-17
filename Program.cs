@@ -1,3 +1,4 @@
+using System.Reflection;
 using TZ_AdvertisingPlatform;
 using TZ_AdvertisingPlatform.Interfaces;
 using TZ_AdvertisingPlatform.Services;
@@ -7,7 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
+});
 
 builder.Services.AddSingleton<IAdvertisingRepository, InMemoryAdvertisingRepository>();
 builder.Services.AddScoped<IAdRecordValidator, AdRecordValidator>();

@@ -15,6 +15,14 @@ namespace TZ_AdvertisingPlatform.Controllers
             _service = service;
         }
 
+        /// <summary>
+        /// Загружает данные рекламных площадок из файла <c>data.txt</c> 
+        /// и полностью перезаписывает текущее хранилище.
+        /// </summary>
+        /// <remarks>
+        /// Если файл пустой или все строки некорректные — вернётся статус <c>404</c>.  
+        /// Если часть строк некорректна, они будут проигнорированы.
+        /// </remarks>
         [HttpPost("Load")]
         public IActionResult LoadFromFile()
         {
@@ -29,6 +37,13 @@ namespace TZ_AdvertisingPlatform.Controllers
             return Ok($"Загружено {result.AddedCount} строк");
         }
 
+        /// <summary>
+        /// Выполняет поиск рекламных площадок по указанной локации.
+        /// </summary>
+        /// <param name="location">Название или идентификатор локации для поиска.</param>
+        /// <remarks>
+        /// Поиск выполняется строго по ключу (без частичного совпадения).  
+        /// </remarks>
         [HttpGet("GetByLocation")]
         public IActionResult GetByLocation(string location)
         {

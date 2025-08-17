@@ -3,6 +3,7 @@ using TZ_AdvertisingPlatform.Models;
 
 namespace TZ_AdvertisingPlatform.Services
 {
+    //Класс для проверки элемента словаря
     public class AdRecordValidator : IAdRecordValidator
     {
         public bool Validate(AdRecord record)

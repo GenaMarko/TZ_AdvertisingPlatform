@@ -1,5 +1,6 @@
 ﻿namespace TZ_AdvertisingPlatform.Interfaces
 {
+    //Абстракция для взаимодействия со словарем
     public interface IAdvertisingRepository
     {
         void Clear();
