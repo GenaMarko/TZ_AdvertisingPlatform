@@ -40,7 +40,7 @@ namespace TZ_AdvertisingPlatform.Controllers
         /// <summary>
         /// Выполняет поиск рекламных площадок по указанной локации.
         /// </summary>
-        /// <param name="location">Название или идентификатор локации для поиска.</param>
+        /// <param name="location">Название локации для поиска.</param>
         /// <remarks>
         /// Поиск выполняется строго по ключу (без частичного совпадения).  
         /// </remarks>
